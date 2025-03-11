@@ -1,13 +1,14 @@
 package com.teksoftwares.simpleutility
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.Scaffold
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Timer
@@ -20,10 +21,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.teksoftwares.simpleutility.Screen
-import com.teksoftwares.simpleutility.ClockScreen
-import com.teksoftwares.simpleutility.TimerScreen
-import com.teksoftwares.simpleutility.StopwatchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,13 +31,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
-    ) { paddingValues ->
-        NavHost(navController, startDestination = Screen.Clock.route) {
+    ) {
+        NavHost(
+            navController,
+            startDestination = Screen.Clock.route,
+        ) {
             composable(Screen.Clock.route) { ClockScreen() }
             composable(Screen.Timer.route) { TimerScreen() }
             composable(Screen.Stopwatch.route) { StopwatchScreen() }
@@ -55,11 +56,11 @@ fun BottomNavigationBar(navController: NavHostController) {
         Screen.Timer,
         Screen.Stopwatch
     )
-    BottomNavigation {
+    NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = {
                     when (item) {
                         Screen.Clock -> Icon(Icons.Filled.AccessTime, contentDescription = item.title)
